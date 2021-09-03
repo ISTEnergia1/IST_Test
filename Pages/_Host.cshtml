@@ -15,7 +15,47 @@
     <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
     <link href="css/site.css" rel="stylesheet" />
     <link href="IST_Test.styles.css" rel="stylesheet" />
+
+<script>
+
+    const Perguntar = () => {
+
+        var pergunta = document.querySelector("#pergunta").value;
+        var resposta = document.querySelector(".resposta");
+        var endpoint = 'https://chatboottreinamentoazure.azurewebsites.net/qnamaker/knowledgebases/12777d5e-fa13-4440-bb53-28ee399e228f/generateAnswer';
+
+        resposta.innerHTML = '';
+
+        var raw = {
+            "question" : pergunta
+        }
+
+        fetch(endpoint, {
+            method : 'POST',
+            headers : {
+                'Authorization' : 'f0ccb14b-a345-42fc-826c-4a94a9b632bd',
+                'Content-Type' : 'application/json'
+            },
+            body : JSON.stringify(raw)
+        })
+        .then(response => response.json())
+        .then(data => {
+
+            if(data.answers != null){
+                
+                data.answers.forEach(item => {
+                    resposta.append(item.answer+" \n");
+                });
+            }
+        })
+        .catch(erro => console.log(erro))            
+
+    }
+
+</script>
+    
 </head>
+
 <body>
     <component type="typeof(App)" render-mode="ServerPrerendered" />
 
